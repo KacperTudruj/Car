@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "35045713885",
+    "firebase_url": "https://carmachine-d7d15.firebaseio.com",
+    "project_id": "carmachine-d7d15",
+    "storage_bucket": "carmachine-d7d15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35045713885:android:3b5733448af508de85b834",
+        "android_client_info": {
+          "package_name": "com.example.carmachine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35045713885-k9v5gvlhs0r6lm05t1cen02n6f0iunf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIXhEYVGqlbwoQlivryVoz5zFgWRG-Fus"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35045713885-k9v5gvlhs0r6lm05t1cen02n6f0iunf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">CarMachine</string>
+
+<!--    main activity (main)-->
+    <string name="username_edittext_register">Username</string>
+    <string name="email_edittext_register">Email</string>
+    <string name="password_edittext_register">Password</string>
+    <string name="register_button_register">Register</string>
+    <string name="already_have_account_text_View">Already have an account?</string>
+    <string name="avatar">SELECT_PHOTO</string>
+
+<!--    Login activity-->
+    <string name="username_edittext_login">Username</string>
+    <string name="password_edittext_login">Password</string>
+    <string name="login_button_login">Login</string>
+    <string name="back_to_register_textview_login">Back to register</string>
+</resources>
