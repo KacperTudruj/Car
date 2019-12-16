@@ -1,5 +1,7 @@
 package com.example.carmachine
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -17,7 +19,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         login_button_login.setOnClickListener {
-            performLogin()
+            openGoogleMaps("Stacja benzynowa")
+            //performLogin()
         }
 
         back_to_register_textview.setOnClickListener{
@@ -43,5 +46,10 @@ class LoginActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Failed to log in: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun openGoogleMaps(searchQuery: String) {
+        val query = "http://maps.google.co.in/maps?q=$searchQuery"
+        val i = Intent(Intent.ACTION_VIEW, Uri.parse(query))
+        startActivity(i)
     }
 }

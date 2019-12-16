@@ -1,7 +1,9 @@
 package com.example.carmachine
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -10,6 +12,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.IgnoreExtraProperties
@@ -41,15 +45,13 @@ class RegisterActivity : AppCompatActivity() {
 
         selectPhoto_button_register.setOnClickListener {
             Log.d(TAG, "Try to show photo selector")
-
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 0)
+            uploadImageToFirebaseStorage()
         }
+
         register_button_register.setOnClickListener {
             auth = FirebaseAuth.getInstance()
             performRegister()
-            //saveUserToFirebaseDatabase(it.toString())
+            saveUserToFirebaseDatabase(it.toString())
         }
     }
 
@@ -110,40 +112,41 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun uploadImageToFirebaseStorage() {
-        if (selectedPhotoUri == null) return
+        //if (selectedPhotoUri == null) return
 
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        //val filename = UUID.randomUUID().toString()
+        //val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
 
-        ref.putFile(selectedPhotoUri!!)
-            .addOnSuccessListener {
-                Log.d(TAG, "Successfully uploaded image: ${it.metadata?.path}")
+        dispatchTakePictureIntent()
 
-                ref.downloadUrl.addOnSuccessListener {
-                    Log.d(TAG, "File Location: $it")
-
-                    saveUserToFirebaseDatabase(it.toString())
-                }
-            }
-            .addOnFailureListener {
-                Log.d(TAG, "Failed to upload image to storage: ${it.message}")
-            }
+//        ref.putFile(selectedPhotoUri!!)
+//            .addOnSuccessListener {
+//                Log.d(TAG, "Successfully uploaded image: ${it.metadata?.path}")
+//
+//                ref.downloadUrl.addOnSuccessListener {
+//                    Log.d(TAG, "File Location: $it")
+//                }
+//            }
     }
 
-//    private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
-//        val uid = FirebaseAuth.getInstance().uid ?: ""
-//        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+    val REQUEST_IMAGE_CAPTURE = 1
+
+    private fun dispatchTakePictureIntent() {
+        //if(hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+//        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE)
 //
-//        val user = User(uid, username_edittext_register.text.toString(), profileImageUrl)
-//
-//        ref.setValue(user)
-//            .addOnSuccessListener {
-//                Log.d(TAG, "Finally we saved the user to Firebase Database")
-//            }
-//            .addOnFailureListener {
-//                Log.d(TAG, "Failed to set value to database: ${it.message}")
-//            }
-//    }
+//        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+
+        }
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
 
     private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         val database = FirebaseDatabase.getInstance()
@@ -169,10 +172,10 @@ class RegisterActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun writeNewUser(userId: String, name: String, email: String?) {
-        val user = User(name, email)
-        database.child("users").child(userId).setValue(user)
-    }
+//    private fun writeNewUser(userId: String, name: String, email: String?) {
+//        val user = User(name, email)
+//        database.child("users").child(userId).setValue(user)
+//    }
 }
 
 
@@ -185,3 +188,4 @@ data class User(
     val profileImageUrl: String? = "",
     val password: String? = ""
 )
+
